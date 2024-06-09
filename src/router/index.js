@@ -1,25 +1,16 @@
-import Vue from 'vue';
-import VueRouter from 'vue-router';
-import Projects from '../views/Projects.vue';
-import ProjectDetails from '../views/ProjectDetails.vue';
+import { createMemoryHistory, createRouter } from 'vue-router'
 
-Vue.use(VueRouter);
+import ProjectsPool from '../views/ProjectsPool.vue'
+import ProjectDetails from '../views/ProjectDetails.vue'
 
 const routes = [
-  {
-    path: '/',
-    name: 'Projects',
-    component: Projects
-  },
-  {
-    path: '/project/:id',
-    name: 'ProjectDetails',
-    component: ProjectDetails
-  }
-];
+  { path: '/projects', component: ProjectsPool },
+  { path: '/projects/:id', component: ProjectDetails },
+]
 
-const router = new VueRouter({
-  routes
-});
+const router = createRouter({
+  history: createMemoryHistory(),
+  routes,
+})
 
 export default router;
