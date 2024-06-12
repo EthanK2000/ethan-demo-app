@@ -1,29 +1,22 @@
 <template>
-  <nav>
-    <router-link to="/projects">Projects</router-link>
-  </nav>
-  <router-view/>
+  <v-layout class="rounded rounded-md">
+    <v-navigation-drawer>
+      <v-list-item :prepend-avatar="require(`@/assets/_bench.avif`)" title="bench_"
+        subtitle="Ethan Kraus" to="/"></v-list-item>
+      <ProjectsNav />
+    </v-navigation-drawer>
+    <v-main>
+      <router-view />
+    </v-main>
+  </v-layout>
 </template>
 
-<style>
-#app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-}
+<script>
+import ProjectsNav from './components/ProjectsNav.vue'
 
-nav {
-  padding: 30px;
+export default {
+  components: {
+    ProjectsNav
+  }
 }
-
-nav a {
-  font-weight: bold;
-  color: #2c3e50;
-}
-
-nav a.router-link-exact-active {
-  color: #42b983;
-}
-</style>
+</script>
