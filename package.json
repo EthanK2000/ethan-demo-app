@@ -9,7 +9,6 @@
   },
   "dependencies": {
     "@mdi/font": "^7.4.47",
-    "@tiptap-pro/extension-file-handler": "^2.8.9",
     "@tiptap/extension-image": "^2.4.0",
     "@tiptap/pm": "^2.4.0",
     "@tiptap/starter-kit": "^2.4.0",
