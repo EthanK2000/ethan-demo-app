@@ -5,10 +5,8 @@
       <v-expansion-panel-title>My Projects</v-expansion-panel-title>
       <v-expansion-panel-text>
         <v-list-item v-for="project in projects" :key="project.id" :to="`/projects/${project.id}`">
-          <v-list-item-content>
-            <v-list-item-title>{{ project.name }}</v-list-item-title>
-            <v-list-item-subtitle>{{ project.description }}</v-list-item-subtitle>
-          </v-list-item-content>
+          <v-list-item-title>{{ project.name }}</v-list-item-title>
+          <v-list-item-subtitle>{{ project.description }}</v-list-item-subtitle>
         </v-list-item>
       </v-expansion-panel-text>
     </v-expansion-panel>
@@ -43,3 +41,9 @@ export default {
   },
 };
 </script>
+
+<style>
+.v-navigation-drawer .v-expansion-panel-text .v-expansion-panel-text__wrapper {
+  padding: 0;
+}
+</style>

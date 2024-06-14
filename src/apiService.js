@@ -20,5 +20,8 @@ export default {
   },
   putProject(id, body) {
     return apiClient.put(`/projects/${id}`,body);
+  },
+  getProjectParts(id) {
+    return apiClient.get(`/projects/${id}/parts`);
   }
 };

@@ -1,6 +1,7 @@
 // Vue App
 import { createApp } from "vue";
 import App from "./App.vue";
+import '@mdi/font/css/materialdesignicons.css'; // Add this line to import MDI CSS
 
 // Vue Router
 import router from "./router";

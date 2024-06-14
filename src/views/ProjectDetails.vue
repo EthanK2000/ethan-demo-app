@@ -2,6 +2,7 @@
   <v-skeleton-loader v-if="!projectDetail" type="heading"></v-skeleton-loader>
   <v-card v-else :title="projectDetail.name" :subtitle="projectDetail.description"></v-card>
   <v-tabs v-model="tab" align-tabs="left" color="primary" :disabled="!projectDetail">
+    <v-tab value="settings"><v-icon icon="mdi-cog"></v-icon></v-tab>
     <v-tab value="requirements">Requirements</v-tab>
     <v-tab value="concept">Concept</v-tab>
     <v-tab value="design">Design</v-tab>
@@ -13,6 +14,9 @@
 
   <v-skeleton-loader v-if="!projectDetail" type="paragraph"></v-skeleton-loader>
   <v-tabs-window v-else v-model="tab">
+    <v-tabs-window-item value="settings">
+      <v-text-field>Settings</v-text-field>
+    </v-tabs-window-item>
     <v-tabs-window-item value="requirements">
       <v-text-field label="Project Name" v-model="projectDetail.name"></v-text-field>
       <v-textarea label="Project Description" v-model="projectDetail.description"></v-textarea>
@@ -33,10 +37,39 @@
         <v-card subtitle="AI Generated"></v-card>
       </v-card>
       <v-card title="Part Selection">
-        <v-expansion-panels>
-          <v-expansion-panel title="Part 1 - Selected Part" text="pros & cons">
+        <v-expansion-panels multiple>
+          <v-expansion-panel v-for="part in parts" :key="part.name">
+            <v-expansion-panel-title>{{ part.name }} - {{ part.selected }}</v-expansion-panel-title>
+            <v-expansion-panel-text>
+              <v-row>
+                <v-radio-group v-model="part.selected" inline color="primary">
+                  <v-card v-for="option in part.options" :key="option.name">
+                    <v-card-title>
+                      <v-row>
+                        <v-radio :label="option.name" :value="option.name"></v-radio>
+                      </v-row>
+                    </v-card-title>
+                    <v-card-text>
+                      <v-row>
+                        <v-col>
+                          <v-list-item-title>Pros</v-list-item-title>
+                          <v-list-item v-for="pro in option.pros" :key="pro">{{ pro }}</v-list-item>
+                        </v-col>
+                        <v-col>
+                          <v-list-item-title>Cons</v-list-item-title>
+                          <v-list-item v-for="con in option.cons" :key="con">{{ con }}</v-list-item>
+                        </v-col>
+                      </v-row>
+                    </v-card-text>
+                  </v-card>
+                </v-radio-group>
+              </v-row>
+            </v-expansion-panel-text>
           </v-expansion-panel>
         </v-expansion-panels>
+        <v-btn @click="updateProjectParts">
+          Generate Parts List
+        </v-btn>
       </v-card>
     </v-tabs-window-item>
     <v-tabs-window-item value="design">
@@ -92,21 +125,27 @@
       </v-card>
     </v-tabs-window-item>
     <v-tabs-window-item value="production">
-      <TipTap content="<h1>Plan</h1><br><h1>Pre</h1><br><h1>Mass</h1><br><h1>Post</h1><br>" />
+      <TipTap content="<h4>Plan</h4><br><h4>Pre</h4><br><h4>Mass</h4><br><h4>Post</h4><br>" />
     </v-tabs-window-item>
     <v-tabs-window-item value="documentation">
       <v-expansion-panels multiple>
-        <v-expansion-panel title="Schematics" text="pros & cons">
+        <v-expansion-panel title="Schematics">
+          <a href="/">Schematics.pdf</a>
         </v-expansion-panel>
-        <v-expansion-panel title="PCB Layouts" text="pros & cons">
+        <v-expansion-panel title="PCB Layouts">
+          <a href="/">PCB Layouts.pdf</a>
         </v-expansion-panel>
-        <v-expansion-panel title="Bill of Materials" text="pros & cons">
+        <v-expansion-panel title="Bill of Materials">
+          <a href="/">Bill of Materials.pdf</a>
         </v-expansion-panel>
-        <v-expansion-panel title="Test Procedures" text="pros & cons">
+        <v-expansion-panel title="Test Procedures">
+          <a href="/">Test Procedures.pdf</a>
         </v-expansion-panel>
-        <v-expansion-panel title="User Manuals" text="pros & cons">
+        <v-expansion-panel title="User Manuals">
+          <a href="/">User Manuals.pdf</a>
         </v-expansion-panel>
-        <v-expansion-panel title="Regulatory Documentation" text="pros & cons">
+        <v-expansion-panel title="Regulatory Documentation">
+          <a href="/">Regulatory Dumentation.pdf</a>
         </v-expansion-panel>
       </v-expansion-panels>
     </v-tabs-window-item>
@@ -129,7 +168,8 @@ export default {
   },
   data: () => ({
     tab: "requirements",
-    projectDetail: null
+    projectDetail: null,
+    parts: null
   }),
   created() {
     this.fetchProject();
@@ -145,6 +185,7 @@ export default {
       try {
         const response = await apiService.getProject(this.id);
         this.projectDetail = response.data;
+        this.parts = this.projectDetail.parts;
       } catch (error) {
         console.error('Error fetching projects:', error);
       }
@@ -157,6 +198,15 @@ export default {
         console.error('Error creating project:', error);
       }
     },
+    async updateProjectParts() {
+      try {
+        const response = await apiService.getProjectParts(this.id);
+        this.parts = response.data.parts;
+        console.log('Project parts updated:', response.data);
+      } catch (error) {
+        console.error('Error updating project parts:', error);
+      }
+    }
   },
 }
 </script>
